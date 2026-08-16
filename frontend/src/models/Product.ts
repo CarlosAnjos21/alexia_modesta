@@ -1,4 +1,5 @@
 export interface Variant {
+  id?: number;
   cor: string;
   tamanho: string;
   estoque: number;
@@ -9,7 +10,8 @@ export interface Product {
   categoria: string;
   nome: string;
   preco: number;
-  desc: string;
+  desc?: string;
+  descricao?: string;
   img: string;
   variantes: Variant[];
 }
@@ -24,4 +26,8 @@ export const COLORS: Record<string, string> = {
   azul: "#3e63a6",
   rosa: "#d98ba0",
   terracota: "#b5622e",
+  champanhe: "#E5D3B3",
+  rosé: "#D9A0A0",
+  nude: "#E3C8B4",
+  "off-white": "#F5F2EC",
 };

@@ -5,8 +5,9 @@ export function useProductFilter(produtos: Product[], categoriaAtiva: string, te
   return useMemo(() => {
     const t = termo.trim().toLowerCase();
     return produtos.filter((p) => {
-      const okCategoria = p.categoria === categoriaAtiva;
-      const okBusca = !t || p.nome.toLowerCase().includes(t) || p.desc.toLowerCase().includes(t);
+      const okCategoria = !categoriaAtiva || p.categoria === categoriaAtiva;
+      const descricaoCompleta = (p.desc || p.descricao || "").toLowerCase();
+      const okBusca = !t || p.nome.toLowerCase().includes(t) || descricaoCompleta.includes(t);
       return okCategoria && okBusca;
     });
   }, [produtos, categoriaAtiva, termo]);
