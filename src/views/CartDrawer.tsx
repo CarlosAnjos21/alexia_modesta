@@ -1,7 +1,7 @@
 import { X, Plus, Minus } from "lucide-react";
-import { PRODUTOS } from "../models/Product";
 import { fmtPreco } from "../utils/format";
 import { useCartContext } from "../controllers/CartContext";
+import { useCatalogContext } from "../controllers/CatalogContext";
 
 interface Props {
   open: boolean;
@@ -10,6 +10,7 @@ interface Props {
 
 export function CartDrawer({ open, onClose }: Props) {
   const { items, removeFromCart, updateQty, cartTotal } = useCartContext();
+  const { findProduct } = useCatalogContext();
 
   return (
     <>
@@ -32,7 +33,7 @@ export function CartDrawer({ open, onClose }: Props) {
         <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
           {items.length === 0 && <p className="text-white/40 text-sm">Seu carrinho está vazio.</p>}
           {items.map((i) => {
-            const produto = PRODUTOS.find((p) => p.id === i.id);
+            const produto = findProduct(i.id);
             if (!produto) return null;
             return (
               <div key={`${i.id}-${i.cor}-${i.tamanho}`} className="flex gap-3">

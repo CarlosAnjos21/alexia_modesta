@@ -2,11 +2,13 @@ import { createContext, useContext } from "react";
 import type { ReactNode } from "react";
 import { useCart } from "./useCart";
 import type { CartState } from "./useCart";
+import { useCatalogContext } from "./CatalogContext";
 
 const CartContext = createContext<CartState | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const cart = useCart();
+  const { produtos } = useCatalogContext();
+  const cart = useCart(produtos);
 
   return <CartContext.Provider value={cart}>{children}</CartContext.Provider>;
 }

@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { Search, ShoppingCart } from "lucide-react";
-import { CATEGORIES } from "../models/Category";
 import logo from "../assets/modesta.svg";
+import { useCatalogContext } from "../controllers/CatalogContext";
 
 interface Props {
   termo: string;
@@ -11,15 +11,13 @@ interface Props {
 }
 
 export function Navbar({ termo, setTermo, cartCount, onOpenCart }: Props) {
+  const { categorias } = useCatalogContext();
+
   return (
     <header className="sticky top-0 z-40 bg-[#14161B]/95 backdrop-blur border-b border-white/10">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-4 flex-wrap">
         <div className="w-22 h-10 rounded-3xl overflow-hidden">
-          <img
-            src={logo}
-            alt="Logo"
-            className="w-full h-full object-cover scale-110"
-          />
+          <img src={logo} alt="Logo" className="w-full h-full object-cover scale-110" />
         </div>
 
         <div className="flex-1 min-w-[160px] order-3 sm:order-none w-full sm:w-auto">
@@ -49,7 +47,7 @@ export function Navbar({ termo, setTermo, cartCount, onOpenCart }: Props) {
       </div>
 
       <nav className="max-w-6xl mx-auto px-4 sm:px-6 pb-3 flex gap-2 overflow-x-auto no-scrollbar">
-        {CATEGORIES.map((c) => (
+        {categorias.map((c) => (
           <NavLink
             key={c.id}
             to={`/categoria/${c.id}`}

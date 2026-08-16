@@ -13,27 +13,19 @@ interface Props {
 export function ProductModal({ produto, onClose }: Props) {
   const { addToCart } = useCartContext();
 
-  const cores = useMemo(
-    () => Array.from(new Set(produto.variantes.map((v) => v.cor))),
-    [produto],
-  );
+  const cores = useMemo(() => Array.from(new Set(produto.variantes.map((v) => v.cor))), [produto]);
   const [corSelecionada, setCorSelecionada] = useState(cores[0]);
 
   const tamanhos = useMemo(
-    () =>
-      produto.variantes
-        .filter((v) => v.cor === corSelecionada)
-        .map((v) => v.tamanho),
-    [produto, corSelecionada],
+    () => produto.variantes.filter((v) => v.cor === corSelecionada).map((v) => v.tamanho),
+    [produto, corSelecionada]
   );
   const [tamanhoSelecionado, setTamanhoSelecionado] = useState(tamanhos[0]);
 
   const [qtd, setQtd] = useState(1);
   const [confirmado, setConfirmado] = useState(false);
 
-  const variante = produto.variantes.find(
-    (v) => v.cor === corSelecionada && v.tamanho === tamanhoSelecionado,
-  );
+  const variante = produto.variantes.find((v) => v.cor === corSelecionada && v.tamanho === tamanhoSelecionado);
   const estoque = variante ? variante.estoque : 0;
 
   useEffect(() => {
@@ -46,46 +38,30 @@ export function ProductModal({ produto, onClose }: Props) {
   }, [corSelecionada, tamanhoSelecionado]);
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 p-0 sm:p-6"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 p-0 sm:p-6" onClick={onClose}>
       <div
         onClick={(e) => e.stopPropagation()}
         className="bg-[#1B1E25] w-full sm:max-w-2xl sm:rounded-2xl rounded-t-2xl max-h-[90vh] overflow-y-auto border border-white/10"
       >
         <div className="flex justify-end p-3">
-          <button
-            onClick={onClose}
-            className="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center"
-          >
+          <button onClick={onClose} className="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center">
             <X className="w-4 h-4 text-white/70" />
           </button>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-6 px-6 pb-6 ">
-          <img
-            src={produto.img}
-            alt={produto.nome}
-            className="w-full h-full  object-cover rounded-xl"
-          />
+        <div className="grid sm:grid-cols-2 gap-6 px-6 pb-6">
+          <img src={produto.img} alt={produto.nome} className="w-full aspect-[3/4] object-cover object-top rounded-xl" />
 
           <div className="flex flex-col gap-4">
             <div>
-              <h2 className="font-serif text-2xl text-[#F5F3EE]">
-                {produto.nome}
-              </h2>
+              <h2 className="font-serif text-2xl text-[#F5F3EE]">{produto.nome}</h2>
               <p className="text-white/50 text-sm mt-1">{produto.desc}</p>
             </div>
 
-            <span className="text-[#E8B84B] font-serif text-2xl">
-              {fmtPreco(produto.preco)}
-            </span>
+            <span className="text-[#E8B84B] font-serif text-2xl">{fmtPreco(produto.preco)}</span>
 
             <div>
-              <p className="text-white/60 text-xs uppercase tracking-wide mb-2">
-                Cor
-              </p>
+              <p className="text-white/60 text-xs uppercase tracking-wide mb-2">Cor</p>
               <div className="flex gap-2 flex-wrap">
                 {cores.map((cor) => (
                   <button
@@ -108,14 +84,10 @@ export function ProductModal({ produto, onClose }: Props) {
             </div>
 
             <div>
-              <p className="text-white/60 text-xs uppercase tracking-wide mb-2">
-                Tamanho
-              </p>
+              <p className="text-white/60 text-xs uppercase tracking-wide mb-2">Tamanho</p>
               <div className="flex gap-2 flex-wrap">
                 {tamanhos.map((tamanho) => {
-                  const v = produto.variantes.find(
-                    (v) => v.cor === corSelecionada && v.tamanho === tamanho,
-                  );
+                  const v = produto.variantes.find((v) => v.cor === corSelecionada && v.tamanho === tamanho);
                   const disponivel = (v?.estoque ?? 0) > 0;
                   return (
                     <button
@@ -150,9 +122,7 @@ export function ProductModal({ produto, onClose }: Props) {
                 >
                   <Minus className="w-3.5 h-3.5" />
                 </button>
-                <span className="w-8 text-center text-sm text-[#F5F3EE]">
-                  {qtd}
-                </span>
+                <span className="w-8 text-center text-sm text-[#F5F3EE]">{qtd}</span>
                 <button
                   onClick={() => setQtd((q) => Math.min(estoque || 1, q + 1))}
                   className="w-8 h-8 flex items-center justify-center text-white/70 hover:text-white"
