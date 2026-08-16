@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+.font-serif {
+  font-family: "Fraunces", serif;
+}
+body,
+input,
+button {
+  font-family: "Inter", sans-serif;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
