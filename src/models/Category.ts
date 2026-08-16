@@ -4,10 +4,9 @@ export interface Category {
 }
 
 export const CATEGORIES: Category[] = [
-  { id: "tenis", label: "Tênis" },
-  { id: "vestuario", label: "Vestuário" },
-  { id: "eletronicos", label: "Eletrônicos" },
-  { id: "casa", label: "Casa & Decor" },
-  { id: "beleza", label: "Beleza" },
-  { id: "livros", label: "Livros" },
+  { id: "vestidos", label: "Vestidos" },
+  { id: "saias", label: "Saias" },
+  { id: "blusas", label: "Blusas" },
+  { id: "conjuntos", label: "Conjuntos" },
+  { id: "acessorios", label: "Acessórios" },
 ];

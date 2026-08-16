@@ -35,25 +35,25 @@ export function CartDrawer({ open, onClose }: Props) {
             const produto = PRODUTOS.find((p) => p.id === i.id);
             if (!produto) return null;
             return (
-              <div key={`${i.id}-${i.cor}`} className="flex gap-3">
+              <div key={`${i.id}-${i.cor}-${i.tamanho}`} className="flex gap-3">
                 <img src={produto.img} alt={produto.nome} className="w-16 h-16 rounded-lg object-cover" />
                 <div className="flex-1">
                   <p className="text-sm text-[#F5F3EE]">{produto.nome}</p>
-                  <p className="text-xs text-white/50 capitalize">{i.cor}</p>
+                  <p className="text-xs text-white/50 capitalize">{i.cor} · {i.tamanho}</p>
                   <div className="flex items-center justify-between mt-1">
                     <div className="flex items-center border border-white/15 rounded-full">
-                      <button onClick={() => updateQty(i.id, i.cor, -1)} className="w-6 h-6 flex items-center justify-center text-white/70">
+                      <button onClick={() => updateQty(i.id, i.cor, i.tamanho, -1)} className="w-6 h-6 flex items-center justify-center text-white/70">
                         <Minus className="w-3 h-3" />
                       </button>
                       <span className="w-6 text-center text-xs text-[#F5F3EE]">{i.qtd}</span>
-                      <button onClick={() => updateQty(i.id, i.cor, 1)} className="w-6 h-6 flex items-center justify-center text-white/70">
+                      <button onClick={() => updateQty(i.id, i.cor, i.tamanho, 1)} className="w-6 h-6 flex items-center justify-center text-white/70">
                         <Plus className="w-3 h-3" />
                       </button>
                     </div>
                     <span className="text-xs text-[#E8B84B]">{fmtPreco(produto.preco * i.qtd)}</span>
                   </div>
                 </div>
-                <button onClick={() => removeFromCart(i.id, i.cor)} className="text-white/30 hover:text-white/70">
+                <button onClick={() => removeFromCart(i.id, i.cor, i.tamanho)} className="text-white/30 hover:text-white/70">
                   <X className="w-4 h-4" />
                 </button>
               </div>

@@ -21,7 +21,7 @@ export function ProductCard({ produto, index, onOpen }: Props) {
         onClick={() => onOpen(produto)}
         className="group cursor-pointer bg-[#1B1E25] border border-white/10 rounded-2xl overflow-hidden hover:border-white/25 transition h-full flex flex-col"
       >
-        <div className="relative aspect-square overflow-hidden bg-black/20">
+        <div className="relative aspect-[3/4] overflow-hidden bg-black/20">
           <img
             src={produto.img}
             alt={produto.nome}
@@ -65,7 +65,12 @@ export function ProductCard({ produto, index, onOpen }: Props) {
                   (v) => v.estoque > 0,
                 );
                 if (primeiraDisponivel)
-                  addToCart(produto, primeiraDisponivel.cor, 1);
+                  addToCart(
+                    produto,
+                    primeiraDisponivel.cor,
+                    primeiraDisponivel.tamanho,
+                    1,
+                  );
               }}
               className="text-xs font-medium bg-[#F5F3EE] text-[#14161B] px-3 py-2 rounded-full disabled:opacity-30 disabled:cursor-not-allowed hover:brightness-95 transition"
             >

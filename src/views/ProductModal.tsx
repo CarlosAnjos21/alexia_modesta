@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { X, Plus, Minus, Check } from "lucide-react";
 import { COLORS } from "../models/Product";
 import type { Product } from "../models/Product";
@@ -12,19 +12,38 @@ interface Props {
 
 export function ProductModal({ produto, onClose }: Props) {
   const { addToCart } = useCartContext();
-  const [corSelecionada, setCorSelecionada] = useState(
-    produto.variantes[0].cor,
+
+  const cores = useMemo(
+    () => Array.from(new Set(produto.variantes.map((v) => v.cor))),
+    [produto],
   );
+  const [corSelecionada, setCorSelecionada] = useState(cores[0]);
+
+  const tamanhos = useMemo(
+    () =>
+      produto.variantes
+        .filter((v) => v.cor === corSelecionada)
+        .map((v) => v.tamanho),
+    [produto, corSelecionada],
+  );
+  const [tamanhoSelecionado, setTamanhoSelecionado] = useState(tamanhos[0]);
+
   const [qtd, setQtd] = useState(1);
   const [confirmado, setConfirmado] = useState(false);
 
-  const variante = produto.variantes.find((v) => v.cor === corSelecionada);
+  const variante = produto.variantes.find(
+    (v) => v.cor === corSelecionada && v.tamanho === tamanhoSelecionado,
+  );
   const estoque = variante ? variante.estoque : 0;
+
+  useEffect(() => {
+    setTamanhoSelecionado(tamanhos[0]);
+  }, [corSelecionada]);
 
   useEffect(() => {
     setQtd(1);
     setConfirmado(false);
-  }, [corSelecionada]);
+  }, [corSelecionada, tamanhoSelecionado]);
 
   return (
     <div
@@ -44,11 +63,11 @@ export function ProductModal({ produto, onClose }: Props) {
           </button>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-6 px-6 pb-6">
+        <div className="grid sm:grid-cols-2 gap-6 px-6 pb-6 ">
           <img
             src={produto.img}
             alt={produto.nome}
-            className="w-full aspect-square object-cover rounded-xl"
+            className="w-full h-full  object-cover rounded-xl"
           />
 
           <div className="flex flex-col gap-4">
@@ -68,33 +87,59 @@ export function ProductModal({ produto, onClose }: Props) {
                 Cor
               </p>
               <div className="flex gap-2 flex-wrap">
-                {produto.variantes.map((v) => (
+                {cores.map((cor) => (
                   <button
-                    key={v.cor}
-                    onClick={() => setCorSelecionada(v.cor)}
+                    key={cor}
+                    onClick={() => setCorSelecionada(cor)}
                     className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs capitalize transition ${
-                      corSelecionada === v.cor
+                      corSelecionada === cor
                         ? "border-[#E8B84B] text-[#F5F3EE]"
                         : "border-white/15 text-white/60 hover:border-white/35"
                     }`}
                   >
                     <span
                       className="w-3.5 h-3.5 rounded-full border border-white/20"
-                      style={{ backgroundColor: COLORS[v.cor] }}
+                      style={{ backgroundColor: COLORS[cor] }}
                     />
-                    {v.cor}
-                    {v.estoque === 0 && (
-                      <span className="text-[#c94a3d]">(esgotado)</span>
-                    )}
+                    {cor}
                   </button>
                 ))}
               </div>
             </div>
 
+            <div>
+              <p className="text-white/60 text-xs uppercase tracking-wide mb-2">
+                Tamanho
+              </p>
+              <div className="flex gap-2 flex-wrap">
+                {tamanhos.map((tamanho) => {
+                  const v = produto.variantes.find(
+                    (v) => v.cor === corSelecionada && v.tamanho === tamanho,
+                  );
+                  const disponivel = (v?.estoque ?? 0) > 0;
+                  return (
+                    <button
+                      key={tamanho}
+                      onClick={() => setTamanhoSelecionado(tamanho)}
+                      disabled={!disponivel}
+                      className={`px-3 py-1.5 rounded-full border text-xs transition disabled:opacity-30 disabled:cursor-not-allowed ${
+                        tamanhoSelecionado === tamanho
+                          ? "border-[#E8B84B] text-[#F5F3EE]"
+                          : "border-white/15 text-white/60 hover:border-white/35"
+                      }`}
+                    >
+                      {tamanho}
+                      {!disponivel && " (esgotado)"}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             <p className="text-xs text-white/50">
               {estoque > 0
-                ? `${estoque} unidade${estoque > 1 ? "s" : ""} em estoque nessa cor`
-                : "Sem estoque nessa cor"}
+                ? `${estoque} unidade${estoque > 1 ? "s" : ""} em estoque nessa cor e tamanho`
+                : "Sem estoque nessa combinação"}
             </p>
 
             <div className="flex items-center gap-3">
@@ -119,7 +164,7 @@ export function ProductModal({ produto, onClose }: Props) {
               <button
                 disabled={estoque === 0}
                 onClick={() => {
-                  addToCart(produto, corSelecionada, qtd);
+                  addToCart(produto, corSelecionada, tamanhoSelecionado, qtd);
                   setConfirmado(true);
                 }}
                 className="flex-1 bg-[#E8B84B] text-[#14161B] font-medium text-sm py-2.5 rounded-full disabled:opacity-30 disabled:cursor-not-allowed hover:brightness-95 transition flex items-center justify-center gap-1.5"
