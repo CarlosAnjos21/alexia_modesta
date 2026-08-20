@@ -12,8 +12,9 @@ const PRODUTOS = [
   {
     categoria: "vestidos",
     nome: "Vestido Mídi Polly Larissa",
-    preco: 219.9,
-    descricao: "Tecido super fluido em toque suave, caimento leve e fechamento delicado em zíper.",
+    preco: 119.9,
+    descricao:
+      "Tecido super fluido em toque suave, caimento leve e fechamento delicado em zíper.",
     img: "",
     variantes: [
       { cor: "verde", tamanho: "38/42", estoque: 5 },
@@ -24,8 +25,9 @@ const PRODUTOS = [
   {
     categoria: "vestidos",
     nome: "Vestido Alfaiataria Premium",
-    preco: 249.9,
-    descricao: "Comprimento mídi elegante, tecido encorpado de altíssima qualidade e caimento estruturado.",
+    preco: 149.9,
+    descricao:
+      "Comprimento mídi elegante, tecido encorpado de altíssima qualidade e caimento estruturado.",
     img: "",
     variantes: [
       { cor: "azul", tamanho: "38/42", estoque: 4 },
@@ -36,8 +38,9 @@ const PRODUTOS = [
   {
     categoria: "saias",
     nome: "Saia Mídi Evasê Alfaiataria Premium",
-    preco: 159.9,
-    descricao: "Modelagem evasê clássica com pregas frontais refinadas e cós estruturado.",
+    preco: 109.9,
+    descricao:
+      "Modelagem evasê clássica com pregas frontais refinadas e cós estruturado.",
     img: "",
     variantes: [
       { cor: "bege", tamanho: "M", estoque: 3 },
@@ -48,8 +51,9 @@ const PRODUTOS = [
   {
     categoria: "saias",
     nome: "Saia de Cetim Plissada",
-    preco: 139.9,
-    descricao: "Caimento impecável em cetim nobre, brilho discreto e sofisticação.",
+    preco: 110.9,
+    descricao:
+      "Caimento impecável em cetim nobre, brilho discreto e sofisticação.",
     img: "",
     variantes: [
       { cor: "champanhe", tamanho: "M", estoque: 4 },
@@ -59,8 +63,9 @@ const PRODUTOS = [
   {
     categoria: "conjuntos",
     nome: "Conjunto Alfaiataria Modesta Rosé Gold",
-    preco: 289.9,
-    descricao: "Blazer acinturado e saia midi estruturada em tecido premium com toque aveludado.",
+    preco: 189.9,
+    descricao:
+      "Blazer acinturado e saia midi estruturada em tecido premium com toque aveludado.",
     img: "",
     variantes: [
       { cor: "rosé", tamanho: "M", estoque: 3 },
@@ -70,8 +75,9 @@ const PRODUTOS = [
   {
     categoria: "camisas",
     nome: "Camisa Seda Pura Gola Laço",
-    preco: 179.9,
-    descricao: "Confeccionada em seda refinada com detalhe de gravata borboleta adaptável e botões perolados.",
+    preco: 79.9,
+    descricao:
+      "Confeccionada em seda refinada com detalhe de gravata borboleta adaptável e botões perolados.",
     img: "",
     variantes: [
       { cor: "off-white", tamanho: "M", estoque: 5 },
@@ -81,8 +87,9 @@ const PRODUTOS = [
   {
     categoria: "acessorios",
     nome: "Cinto Couro Legítimo Fivela Rosé Gold",
-    preco: 79.9,
-    descricao: "Cinto em couro nobre ajustável com acabamento escovado em tom rosé bronze.",
+    preco: 39.9,
+    descricao:
+      "Cinto em couro nobre ajustável com acabamento escovado em tom rosé bronze.",
     img: "",
     variantes: [
       { cor: "caramelo", tamanho: "Único", estoque: 10 },
@@ -99,21 +106,21 @@ async function seed() {
     for (const c of CATEGORIES) {
       await client.query(
         "INSERT INTO categories (id, label) VALUES ($1, $2) ON CONFLICT (id) DO UPDATE SET label = $2",
-        [c.id, c.label]
+        [c.id, c.label],
       );
     }
 
     for (const p of PRODUTOS) {
       const { rows } = await client.query(
         "INSERT INTO products (categoria, nome, preco, descricao, img) VALUES ($1, $2, $3, $4, $5) RETURNING id",
-        [p.categoria, p.nome, p.preco, p.descricao, p.img]
+        [p.categoria, p.nome, p.preco, p.descricao, p.img],
       );
       const productId = rows[0].id;
 
       for (const v of p.variantes) {
         await client.query(
           "INSERT INTO product_variants (product_id, cor, tamanho, estoque) VALUES ($1, $2, $3, $4)",
-          [productId, v.cor, v.tamanho, v.estoque]
+          [productId, v.cor, v.tamanho, v.estoque],
         );
       }
     }

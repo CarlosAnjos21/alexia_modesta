@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import type { ReactNode } from "react";
 import type { Product } from "../models/Product";
 import type { Category } from "../models/Category";
@@ -28,8 +34,9 @@ const DEFAULT_PRODUTOS: Product[] = [
     id: 1,
     categoria: "vestidos",
     nome: "Vestido Mídi Polly Larissa",
-    preco: 219.9,
-    descricao: "Tecido super fluido em toque suave, caimento leve e fechamento delicado em zíper.",
+    preco: 119.9,
+    descricao:
+      "Tecido super fluido em toque suave, caimento leve e fechamento delicado em zíper.",
     img: "",
     variantes: [
       { id: 101, cor: "verde", tamanho: "38/42", estoque: 5 },
@@ -41,8 +48,9 @@ const DEFAULT_PRODUTOS: Product[] = [
     id: 2,
     categoria: "vestidos",
     nome: "Vestido Alfaiataria Premium Rosé",
-    preco: 249.9,
-    descricao: "Comprimento mídi elegante, tecido encorpado de altíssima qualidade e caimento estruturado.",
+    preco: 149.9,
+    descricao:
+      "Comprimento mídi elegante, tecido encorpado de altíssima qualidade e caimento estruturado.",
     img: "",
     variantes: [
       { id: 201, cor: "rosé", tamanho: "38/42", estoque: 4 },
@@ -53,8 +61,9 @@ const DEFAULT_PRODUTOS: Product[] = [
     id: 3,
     categoria: "saias",
     nome: "Saia Mídi Evasê Alfaiataria Premium",
-    preco: 159.9,
-    descricao: "Modelagem evasê clássica com pregas frontais refinadas e cós estruturado.",
+    preco: 109.9,
+    descricao:
+      "Modelagem evasê clássica com pregas frontais refinadas e cós estruturado.",
     img: "",
     variantes: [
       { id: 301, cor: "bege", tamanho: "M", estoque: 3 },
@@ -65,8 +74,9 @@ const DEFAULT_PRODUTOS: Product[] = [
     id: 4,
     categoria: "saias",
     nome: "Saia de Cetim Plissada Champanhe",
-    preco: 139.9,
-    descricao: "Caimento impecável em cetim nobre, brilho discreto e sofisticação.",
+    preco: 110.9,
+    descricao:
+      "Caimento impecável em cetim nobre, brilho discreto e sofisticação.",
     img: "",
     variantes: [{ id: 401, cor: "champanhe", tamanho: "M", estoque: 4 }],
   },
@@ -74,8 +84,9 @@ const DEFAULT_PRODUTOS: Product[] = [
     id: 5,
     categoria: "conjuntos",
     nome: "Conjunto Alfaiataria Modesta Rosé Gold",
-    preco: 289.9,
-    descricao: "Blazer acinturado e saia midi estruturada em tecido premium com toque aveludado.",
+    preco: 189.9,
+    descricao:
+      "Blazer acinturado e saia midi estruturada em tecido premium com toque aveludado.",
     img: "",
     variantes: [{ id: 501, cor: "rosé", tamanho: "M", estoque: 3 }],
   },
@@ -83,8 +94,9 @@ const DEFAULT_PRODUTOS: Product[] = [
     id: 6,
     categoria: "camisas",
     nome: "Camisa Seda Pura Gola Laço",
-    preco: 179.9,
-    descricao: "Confeccionada em seda refinada com detalhe de gravata borboleta adaptável e botões perolados.",
+    preco: 79.9,
+    descricao:
+      "Confeccionada em seda refinada com detalhe de gravata borboleta adaptável e botões perolados.",
     img: "",
     variantes: [{ id: 601, cor: "off-white", tamanho: "M", estoque: 5 }],
   },
@@ -92,8 +104,9 @@ const DEFAULT_PRODUTOS: Product[] = [
     id: 7,
     categoria: "acessorios",
     nome: "Cinto Couro Legítimo Fivela Rosé Gold",
-    preco: 79.9,
-    descricao: "Cinto em couro nobre ajustável com acabamento escovado em tom rosé bronze.",
+    preco: 39.9,
+    descricao:
+      "Cinto em couro nobre ajustável com acabamento escovado em tom rosé bronze.",
     img: "",
     variantes: [{ id: 701, cor: "caramelo", tamanho: "Único", estoque: 10 }],
   },
@@ -132,7 +145,16 @@ export function CatalogProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <CatalogContext.Provider value={{ categorias, produtos, carregando, erro, findProduct, refetch: carregar }}>
+    <CatalogContext.Provider
+      value={{
+        categorias,
+        produtos,
+        carregando,
+        erro,
+        findProduct,
+        refetch: carregar,
+      }}
+    >
       {children}
     </CatalogContext.Provider>
   );
@@ -140,6 +162,9 @@ export function CatalogProvider({ children }: { children: ReactNode }) {
 
 export function useCatalogContext(): CatalogState {
   const ctx = useContext(CatalogContext);
-  if (!ctx) throw new Error("useCatalogContext deve ser usado dentro de CatalogProvider");
+  if (!ctx)
+    throw new Error(
+      "useCatalogContext deve ser usado dentro de CatalogProvider",
+    );
   return ctx;
 }
